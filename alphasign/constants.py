@@ -56,54 +56,6 @@ positions = {
   "right":              "\x32",
 }
 
-# Character Sets
-charsets = {
-  "five_high_std":      "1",
-  "five_stroke":        "2",
-  "seven_high_std":     "3",
-  "seven_stroke":       "4",
-  "seven_high_fancy":   "5",
-  "ten_high_std":       "6",
-  "seven_shadow":       "7",
-  "full_height_fancy":  "8",
-  "full_height_std":    "9",
-  "seven_shadow_fancy": ":",
-  "five_wide":          ";",
-  "seven_wide":         "<",
-  "seven_fancy_wide":   "=",
-  "wide_stroke_five":   ">",
-  # The following four only work on Alpha 2.0 and Alpha 3.0 protocols
-  "five_high_cust":     "W",
-  "seven_high_cust":    "X",
-  "ten_high_cust":      "Y",
-  "fifteen_high_cust":  "Z",
-}
-
-# Extended characters
-extchars = {
-  "up_arrow":           "\x64",
-  "down_arrow":         "\x65",
-  "left_arrow":         "\x66",
-  "right_arrow":        "\x67",
-  "pacman":             "\x68",
-  "sail_boat":          "\x69",
-  "ball":               "\x6A",
-  "telephone":          "\x6B",
-  "heart":              "\x6C",
-  "car":                "\x6D",
-  "handicap":           "\x6E",
-  "rhino":              "\x6F",
-  "mug":                "\x70",
-  "satellite_dish":     "\x71",
-  "copyright_symbol":   "\x72",
-  "male_symbol":        "\x73",
-  "female_symbol":      "\x74",
-  "bottle":             "\x75",
-  "diskette":           "\x76",
-  "printer":            "\x77",
-  "musical_note":       "\x78",
-  "infinity_symbol":    "\x79",
-}
 
 # Counters
 # We have 5 of them.
@@ -115,21 +67,7 @@ counters = {
   5:                    "-",
 }
 
-# Colors
-colors = {
-  "red":                "1",
-  "green":              "2",
-  "amber":              "3",
-  "dim_red":            "4",
-  "dim_green":          "5",
-  "brown":              "6",
-  "orange":             "7",
-  "yellow":             "8",
-  "rainbow_1":          "9",
-  "rainbow_2":          "A",
-  "color_mix":          "B",
-  "autocolor":          "C",
-}
+
 
 # Command Codes
 WRITE_TEXT            = "A"  # Write TEXT file (p18)
