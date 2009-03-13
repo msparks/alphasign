@@ -43,8 +43,11 @@ LF                    = "\x0A"  # Line Feed
 NL                    = "\x0A"  # New Line
 VT                    = "\x0B"  # Vertical Tab
 #FF                    = "\x0C"  # Form Feed
-#NP                    = "\x0C"  # New Page
+NP                    = "\x0C"  # New Page
 CR                    = "\x0D"  # Carriage Return
 CAN                   = "\x18"  # Cancel
 SUB                   = "\x1A"  # Substitute (select charset)
 ESC                   = "\x1B"  # Escape character
+
+NEWLINE               = NL
+NEWPAGE               = NP
