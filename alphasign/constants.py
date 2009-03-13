@@ -1,14 +1,3 @@
-# Counters
-# We have 5 of them.
-counters = {
-  1:                    "z",
-  2:                    "{",
-  3:                    "|",
-  4:                    "}",
-  5:                    "-",
-}
-
-
 # Command Codes
 WRITE_TEXT            = "A"  # Write TEXT file (p18)
 READ_TEXT             = "B"  # Read TEXT file (p19)
