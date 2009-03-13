@@ -6,6 +6,8 @@ from packet import Packet
 
 class Text(object):
   def __init__(self, msg=None, label=None, size=None, position=None, mode=None):
+    if msg is None:
+      msg = ""
     if label is None:
       label = "A"
     if size is None:

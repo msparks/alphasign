@@ -17,3 +17,4 @@ import colors
 import positions
 import modes
 import speeds
+import extchars
