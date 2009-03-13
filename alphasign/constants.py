@@ -68,7 +68,6 @@ counters = {
 }
 
 
-
 # Command Codes
 WRITE_TEXT            = "A"  # Write TEXT file (p18)
 READ_TEXT             = "B"  # Read TEXT file (p19)
