@@ -48,4 +48,3 @@ class Time(object):
     byte = (format == 0) and "S" or "M"
     packet = Packet("%s%s%s" % (constants.WRITE_SPECIAL, "\x27", byte))
     return packet
-

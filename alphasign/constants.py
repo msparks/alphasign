@@ -1,62 +1,3 @@
-# Display Modes (p89)
-modes = {
-  "rotate":             "a",
-  "hold":               "b",
-  "flash":              "c",
-  "roll_up":            "e",
-  "roll_down":          "f",
-  "roll_left":          "g",
-  "roll_right":         "h",
-  "wipe_up":            "i",
-  "wipe_down":          "j",
-  "wipe_left":          "k",
-  "wipe_right":         "l",
-  "scroll":             "m",
-  "automode":           "o",
-  "roll_in":            "p",
-  "roll_out":           "q",
-  "wipe_in":            "r",
-  "wipe_out":           "s",
-  "compressed_rotate":  "t",  # only available on certain sign models
-  "explode":            "u",  # alpha 3.0 protocol
-  "clock":              "v",  # alpha 3.0 protocol
-  # Special Modes
-  "twinkle":            "n0",
-  "sparkle":            "n1",
-  "snow":               "n2",
-  "interlock":          "n3",
-  "switch":             "n4",
-  "slide":              "n5",  # only Betabrite 1036 (same as CYCLE_COLORS?)
-  "spray":              "n6",
-  "starburst":          "n7",
-  "welcome":            "n8",
-  "slot_machine":       "n9",
-  "news_flash":         "nA",  # only Betabrite 1036
-  "trumpet_animation":  "nb",  # only betabrite 1036
-  "cycle_colors":       "nC",  # only AlphaEclipse 3600
-  # Special Graphics (these display before the message)
-  "thank_you":          "nS",
-  "no_smoking":         "nU",
-  "dont_drive_drive":   "nV",
-  "running_animal":     "nW",
-  "fish_animation":     "nW",
-  "fireworks":          "nX",
-  "turbo_car":          "nY",
-  "balloon_animation":  "nY",
-  "cherry_bomb":        "nZ",
-}
-
-# Display Positions
-positions = {
-  "middle_line":        "\x20",
-  "top_line":           "\x22",
-  "bottom_line":        "\x26",
-  "fill":               "\x30",
-  "left":               "\x31",
-  "right":              "\x32",
-}
-
-
 # Counters
 # We have 5 of them.
 counters = {
@@ -83,6 +24,9 @@ WRITE_LARGE_DOTS      = "M"  # Write LARGE DOTS PICTURE file (p42)
 READ_LARGE_DOTS       = "N"  # Read LARGE DOTS PICTURE file (p43)
 WRITE_ALPHAVISION     = "O"  # Write ALPHAVISION BULLETIN (p48)
 SET_TIMEOUT           = "T"  # Set Timeout Message (p118) (Alpha 2.0/3.0)
+
+UNLOCKED              = "U"
+LOCKED                = "L"
 
 # Constants used in transmission packets
 NUL                   = "\x00"  # NULL

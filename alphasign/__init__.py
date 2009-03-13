@@ -12,3 +12,8 @@ from date import Date
 from string import String
 from packet import Packet
 from text import Text
+
+import colors
+import positions
+import modes
+import speeds

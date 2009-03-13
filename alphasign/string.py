@@ -18,31 +18,6 @@ class String(object):
     self.size = size
     self.data = data
 
-  def allocate(self):
-    """Create a STRING.
-
-    This is necessary to allocate memory for the STRING on the sign
-
-    Args:
-      label: label of the STRING to create
-      size: size of the STRING to create, in bytes. 125 max.
-    """
-    size_hex = "%04x" % self.size
-    packet = Packet("%s%s%s%s%s%s%s%s%s%s%s%s%s" %
-                    (constants.WRITE_SPECIAL, "\$",
-                     "A",          # call label.. why does this matter?
-                     "A",          # text file type
-                     "U",          # this TEXT file is unlocked
-                     "0100",       # text file size in hex
-                     "FF",         # text file's start time (FF = always)
-                     "00",         # text file's stop time
-                     self.label,
-                     "B",          # string file type
-                     "L",          # this string file is locked
-                     size_hex,
-                     "0000"))      # padding
-    return packet
-
   def call(self):
     """Call a STRING.
 

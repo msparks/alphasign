@@ -1,5 +1,10 @@
+import time
+
 from alphasign import constants
 from alphasign import packet
+
+import alphasign.string
+import alphasign.text
 
 
 class BaseInterface(object):
@@ -11,6 +16,7 @@ class BaseInterface(object):
     """
     pkt = packet.Packet("%s%s" % (constants.WRITE_SPECIAL, "$"))
     self.write(pkt)
+    time.sleep(1)
 
   def beep(self, frequency=0, duration=0.1, repeat=0):
     """Make the sign beep.
@@ -46,4 +52,61 @@ class BaseInterface(object):
     This is non-destructive and does not clear the sign's memory.
     """
     pkt = packet.Packet("%s%s" % (constants.WRITE_SPECIAL, ","))
+    self.write(pkt)
+
+  def allocate(self, files):
+    """Allocate a set of files on the device.
+
+    Args:
+      files: list of file objects (Text, String, ...)
+    """
+    seq = ""
+    for obj in files:
+      size_hex = "%04x" % obj.size
+      # format: FTPSIZEQQQQ
+
+      if type(obj) == alphasign.string.String:
+        file_type = "B"
+        qqqq = "0000"  # unused for strings
+        lock = constants.LOCKED
+      else: # if type(obj) == alphasign.text.Text:
+        file_type = "A"
+        qqqq = "FFFF"  # TODO(ms): start/end times
+        lock = constants.UNLOCKED
+
+      alloc_str = ("%s%s%s%s%s" %
+                   (obj.label,   # file label to allocate
+                   file_type,    # file type
+                   lock,
+                   size_hex,     # size in hex
+                   qqqq))
+      seq += alloc_str
+
+    # allocate special TARGET TEXT files 1 through 5
+    for i in range(5):
+      alloc_str = ("%s%s%s%s%s" %
+                   ("%d" % (i + 1),
+                   "A",    # file type
+                   constants.UNLOCKED,
+                   "%04x" % 100,
+                   "FEFE"))
+      seq += alloc_str
+
+    pkt = packet.Packet("%s%s%s" % (constants.WRITE_SPECIAL, "$", seq))
+    self.write(pkt)
+
+  def set_run_sequence(self, files, locked=False):
+    """Set the run sequence on the device.
+
+    This determines the order in which the files are displayed on the device.
+
+    Args:
+      files: ordered list of file objects (Text, String, ...)
+      locked: allow sequence to be changed with IR keyboard
+    """
+    seq_str = ".T"
+    seq_str += locked and "L" or "U"
+    for obj in files:
+      seq_str += obj.label
+    pkt = packet.Packet("%s%s" % (constants.WRITE_SPECIAL, seq_str))
     self.write(pkt)
