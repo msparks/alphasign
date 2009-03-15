@@ -5,15 +5,15 @@ from packet import Packet
 
 
 class Text(object):
-  def __init__(self, msg=None, label=None, size=None, position=None, mode=None):
-    if msg is None:
-      msg = ""
+  def __init__(self, data=None, label=None, size=None, position=None, mode=None):
+    if data is None:
+      data = ""
     if label is None:
       label = "A"
     if size is None:
       size = 64
-    if len(msg) > size:
-      size = len(msg)
+    if len(data) > size:
+      size = len(data)
     if size > 125:
       size = 125
     if size < 1:
@@ -25,7 +25,7 @@ class Text(object):
 
     self.label = label
     self.size = size
-    self.msg = msg
+    self.data = data
     self.position = position
     self.mode = mode
 
@@ -36,7 +36,7 @@ class Text(object):
                                       constants.ESC,
                                       self.position,
                                       self.mode,
-                                      self.msg))
+                                      self.data))
     return str(packet)
 
   def __repr__(self):

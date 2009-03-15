@@ -18,4 +18,5 @@ import positions
 import modes
 import speeds
 import extchars
+import charsets
 import counters

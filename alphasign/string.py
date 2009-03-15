@@ -4,6 +4,8 @@ from packet import Packet
 
 class String(object):
   def __init__(self, data=None, label=None, size=None):
+    if data is None:
+      data = ""
     if label is None:
       label = "1"
     if size is None:
