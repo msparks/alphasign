@@ -5,7 +5,16 @@ from packet import Packet
 
 
 class Text(object):
-  def __init__(self, data=None, label=None, size=None, position=None, mode=None):
+  """Class representing a TEXT file."""
+  def __init__(self, data=None, label=None, size=None,
+               position=None, mode=None):
+    """
+    :param data: initial string to insert into object
+    :param label: file label: (default: "A")
+    :param size: amount of bytes to allocate for object on sign (default: 64)
+    :param position: constant from :mod:`alphasign.positions`
+    :param mode: constant from :mod:`alphasign.modes`
+    """
     if data is None:
       data = ""
     if label is None:

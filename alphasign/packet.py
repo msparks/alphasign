@@ -2,6 +2,11 @@ import constants
 
 
 class Packet(object):
+  """Container for data to be sent to a sign device.
+
+  Packet objects are created by other classes and should not usually be
+  instantiated directly.
+  """
   def __init__(self, contents):
     self.type     = "Z"            # Type Code (see protocol)
     self.address  = "00"           # Sign Address (see protocol)

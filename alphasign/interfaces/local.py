@@ -5,15 +5,20 @@ from alphasign.interfaces import base
 
 
 class Serial(base.BaseInterface):
+  """Connect to a sign through a local serial device.
+
+  This class uses `pySerial <http://pyserial.sourceforge.net/>`_.
+  """
   def __init__(self, device="/dev/ttyS0"):
+    """
+    :param device: character device (default: /dev/ttyS0)
+    :type device: string
+    """
     self.device = device
     self.debug = True
 
   def connect(self):
     """Establish connection to the device.
-
-    Args:
-      device: character device (default: /dev/ttyS0)
     """
     # TODO(ms): these settings can probably be tweaked and still support most of
     # the devices.
@@ -26,10 +31,17 @@ class Serial(base.BaseInterface):
                                rtscts=0)
 
   def disconnect(self):
+    """Disconnect from the device.
+    """
     if self._conn:
       self._conn.close()
 
   def write(self, packet):
+    """Write packet to the serial interface.
+
+    :param packet: packet to write
+    :type packet: :class:`alphasign.packet.Packet`
+    """
     if not self._conn:
       return
     if self.debug:
@@ -38,6 +50,10 @@ class Serial(base.BaseInterface):
 
 
 class DebugInterface(base.BaseInterface):
+  """Dummy interface used only for debugging.
+
+  This does nothing except print the contents of written packets.
+  """
   def __init__(self):
     self.debug = True
 
