@@ -1,3 +1,32 @@
+"""
+Extended characters can be inserted into STRING or TEXT files.
+
+The following extended character constants are defined:
+
+* :const:`UP_ARROW`
+* :const:`DOWN_ARROW`
+* :const:`LEFT_ARROW`
+* :const:`RIGHT_ARROW`
+* :const:`PACMAN`
+* :const:`SAIL_BOAT`
+* :const:`BALL`
+* :const:`TELEPHONE`
+* :const:`HEART`
+* :const:`CAR`
+* :const:`HANDICAP`
+* :const:`RHINO`
+* :const:`MUG`
+* :const:`SATELLITE_DISH`
+* :const:`COPYRIGHT_SYMBOL`
+* :const:`MALE_SYMBOL`
+* :const:`FEMALE_SYMBOL`
+* :const:`BOTTLE`
+* :const:`DISKETTE`
+* :const:`PRINTER`
+* :const:`MUSICAL_NOTE`
+* :const:`INFINITY_SYMBOL`
+"""
+
 # Extended characters
 UP_ARROW         = "\x08\x64"
 DOWN_ARROW       = "\x08\x65"

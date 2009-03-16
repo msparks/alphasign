@@ -1,3 +1,20 @@
+"""
+The following constants are defined to change TEXT colors:
+
+* :const:`RED`
+* :const:`GREEN`
+* :const:`AMBER`
+* :const:`DIM_RED`
+* :const:`DIM_GREEN`
+* :const:`BROWN`
+* :const:`ORANGE`
+* :const:`YELLOW`
+* :const:`RAINBOW_1`
+* :const:`RAINBOW_2`
+* :const:`COLOR_MIX`
+* :const:`AUTOCOLOR`
+"""
+
 # Colors
 RED       = "\x1C1"
 GREEN     = "\x1C2"
