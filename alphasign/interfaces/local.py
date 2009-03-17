@@ -46,7 +46,12 @@ class Serial(base.BaseInterface):
       return
     if self.debug:
       print "Writing packet: %s" % repr(packet)
-    self._conn.write(str(packet))
+    try:
+      self._conn.write(str(packet))
+    except OSError:
+      return False
+    else:
+      return True
 
 
 class DebugInterface(base.BaseInterface):
@@ -66,4 +71,5 @@ class DebugInterface(base.BaseInterface):
   def write(self, packet):
     if self.debug:
       print "Writing packet: %s" % repr(packet)
+    return True
 

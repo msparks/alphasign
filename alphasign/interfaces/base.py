@@ -9,7 +9,7 @@ import alphasign.text
 
 class BaseInterface(object):
   def write(self, data):
-    pass
+    return False
 
   def clear_memory(self):
     """Clear the sign's memory.
