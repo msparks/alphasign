@@ -16,6 +16,7 @@ class Serial(base.BaseInterface):
     """
     self.device = device
     self.debug = True
+    self._conn = None
 
   def connect(self):
     """Establish connection to the device.
@@ -42,8 +43,8 @@ class Serial(base.BaseInterface):
     :param packet: packet to write
     :type packet: :class:`alphasign.packet.Packet`
     """
-    if not self._conn:
-      return
+    if not self._conn or not self._conn.isOpen():
+      self.connect()
     if self.debug:
       print "Writing packet: %s" % repr(packet)
     try:
