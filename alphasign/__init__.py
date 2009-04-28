@@ -6,6 +6,7 @@ import serial
 import constants
 from interfaces.local import DebugInterface
 from interfaces.local import Serial
+from interfaces.local import USB
 
 from time import Time
 from date import Date

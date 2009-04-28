@@ -1,5 +1,6 @@
 import serial
 import time
+import usb
 
 from alphasign.interfaces import base
 
@@ -53,6 +54,58 @@ class Serial(base.BaseInterface):
       return False
     else:
       return True
+
+
+class USB(base.BaseInterface):
+  """Connect to a sign using USB.
+
+  This class uses `PyUSB <http://pyusb.berlios.de>`_.
+  """
+  def __init__(self, usb_id):
+    """
+    :param usb_id: tuple of (vendor id, product id) identifying the USB device
+    """
+    self.vendor_id, self.product_id = usb_id
+    self.debug = False
+    self._handle = None
+    self._conn = None
+
+  def _get_device(self):
+    for bus in usb.busses():
+      for device in bus.devices:
+        if (device.idVendor == self.vendor_id and
+            device.idProduct == self.product_id):
+          return device
+    return None
+
+  def connect(self):
+    """
+    TODO(ms): needs exception info
+    """
+    if self._conn:
+      return
+
+    device = self._get_device()
+    if not device:
+      raise usb.USBError, ("failed to find USB device %04x:%04x" %
+                           (self.vendor_id, self.product_id))
+
+    interface = device.configurations[0].interfaces[0][0]
+    self._read_endpoint, self._write_endpoint = interface.endpoints
+    self._conn = device.open()
+    self._conn.claimInterface(interface)
+
+  def disconnect(self):
+    if self._conn:
+      self._conn.releaseInterface()
+
+  def write(self, packet):
+    if not self._conn:
+      self.connect()
+    if self.debug:
+      print "Writing packet: %s" % repr(packet)
+    self._conn.bulkWrite(self._write_endpoint.address, str(packet))
+    self._conn.bulkWrite(self._write_endpoint.address, '')
 
 
 class DebugInterface(base.BaseInterface):
