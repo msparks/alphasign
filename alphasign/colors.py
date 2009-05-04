@@ -28,4 +28,25 @@ RAINBOW_1 = "\x1C9"
 RAINBOW_2 = "\x1CA"
 COLOR_MIX = "\x1CB"
 AUTOCOLOR = "\x1CC"
-# TODO(ms): need support for RGB colors
+
+
+def rgb(rgb):
+  """
+  Create color constant for use in TEXT and STRING files.
+
+  :param rgb: 6-character hex string in form RRGGBB.
+  """
+  if len(rgb) and rgb[0] == "#":
+    rgb = rgb[1:]
+  return "\x1CZ%s" % rgb
+
+
+def shadow_rgb(rgb):
+  """
+  Create shadow color constant for use in TEXT and STRING files.
+
+  :param rgb: 6-character hex string in form RRGGBB.
+  """
+  if len(rgb) and rgb[0] == "#":
+    rgb = rgb[1:]
+  return "\x1CY%s" % rgb
