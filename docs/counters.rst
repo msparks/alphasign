@@ -1,7 +1,6 @@
-Modes
-=====
+Counters
+========
 
-.. automodule:: alphasign.modes
+.. automodule:: alphasign.counters
   :members:
-  :undoc-members:
 

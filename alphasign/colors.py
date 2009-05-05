@@ -1,5 +1,6 @@
 """
-The following constants are defined to change TEXT colors:
+The following constants are defined to change TEXT
+(:class:`alphasign.text.Text`) colors:
 
 * :const:`RED`
 * :const:`GREEN`
@@ -13,6 +14,28 @@ The following constants are defined to change TEXT colors:
 * :const:`RAINBOW_2`
 * :const:`COLOR_MIX`
 * :const:`AUTOCOLOR`
+
+.. autofunction:: rgb
+.. autofunction:: shadow_rgb
+
+--------
+Examples
+--------
+
+Make a text file with red text::
+
+  msg = alphasign.Text("%sthis text is red" % alphasign.colors.RED, label="A")
+
+Make a text file with purple text (#CC66FF)::
+
+  msg = alphasign.Text("%sthis text should be in purple" %
+                       alphasign.colors.rgb("CC66FF"), label="A")
+
+Make a bi-color text file (red primary with a green shadow)::
+
+  msg = alphasign.Text("%s%sred and green" %
+                       (alphasign.colors.rgb("FF0000"),
+                        alphasign.colors.rgb("00FF00")), label="A")
 """
 
 # Colors

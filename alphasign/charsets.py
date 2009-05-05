@@ -1,5 +1,7 @@
 """
-Character sets can be used to change the font style in TEXT and STRING files.
+Character sets can be used to change the font style in TEXT
+(:class:`alphasign.text.Text`) and STRING (:class:`alphasign.string.String`)
+files.
 
 The following character set constants are defined:
 
@@ -24,6 +26,16 @@ The following character sets are available only on Alpha 2.0 and 3.0 protocols:
 * :const:`SEVEN_HIGH_CUST`
 * :const:`TEN_HIGH_CUST`
 * :const:`FIFTEEN_HIGH_CUST`
+
+--------
+Examples
+--------
+
+Make a text file using the :const:`FIVE_WIDE` charset::
+
+  msg = alphasign.Text("%sthis is wide" % alphasign.charsets.FIVE_WIDE,
+                       label="A")
+
 """
 
 # Character sets

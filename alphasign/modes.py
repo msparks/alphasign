@@ -52,6 +52,18 @@ following special graphics are defined:
 * :const:`TURBO_CAR`
 * :const:`BALLOON_ANIMATION`
 * :const:`CHERRY_BOMB`
+
+--------
+Examples
+--------
+
+Make a text file stationary on the sign::
+
+  msg = alphasign.Text("hello world", label="A", mode=alphasign.modes.HOLD)
+
+To change the mode for an already created text file, do::
+
+  msg.mode = alphasign.modes.ROLL_IN
 """
 
 # Normal display modes

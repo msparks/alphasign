@@ -3,7 +3,13 @@ from packet import Packet
 
 
 class String(object):
+  """Class representing a STRING file."""
   def __init__(self, data=None, label=None, size=None):
+    """
+    :param data: initial string to insert into object
+    :param label: file label (default: "1")
+    :param size: maximum size of string data in bytes (default: 32)
+    """
     if data is None:
       data = ""
     if label is None:
