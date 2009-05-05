@@ -78,9 +78,11 @@ class USB(base.BaseInterface):
           return device
     return None
 
-  def connect(self):
+  def connect(self, reset=True):
     """
-    TODO(ms): needs exception info
+    :param reset: send a USB RESET command to the sign.
+                  This seems to cause problems in VMware.
+    :exception usb.USBError: on USB-related errors
     """
     if self._conn:
       return
@@ -93,18 +95,24 @@ class USB(base.BaseInterface):
     interface = device.configurations[0].interfaces[0][0]
     self._read_endpoint, self._write_endpoint = interface.endpoints
     self._conn = device.open()
+    if reset:
+      self._conn.reset()
     self._conn.claimInterface(interface)
 
   def disconnect(self):
+    """ """
     if self._conn:
       self._conn.releaseInterface()
 
   def write(self, packet):
+    """ """
     if not self._conn:
       self.connect()
     if self.debug:
       print "Writing packet: %s" % repr(packet)
-    self._conn.bulkWrite(self._write_endpoint.address, str(packet))
+    written = self._conn.bulkWrite(self._write_endpoint.address, str(packet))
+    if self.debug:
+      print "%d bytes written" % written
     self._conn.bulkWrite(self._write_endpoint.address, '')
 
 
@@ -117,13 +125,15 @@ class DebugInterface(base.BaseInterface):
     self.debug = True
 
   def connect(self):
+    """ """
     pass
 
   def disconnect(self):
+    """ """
     pass
 
   def write(self, packet):
+    """ """
     if self.debug:
       print "Writing packet: %s" % repr(packet)
     return True
-
