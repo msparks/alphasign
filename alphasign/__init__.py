@@ -14,10 +14,11 @@ from string import String
 from packet import Packet
 from text import Text
 
-import colors
-import positions
-import modes
-import speeds
-import extchars
 import charsets
+import colors
 import counters
+import devices
+import extchars
+import modes
+import positions
+import speeds

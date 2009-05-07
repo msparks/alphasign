@@ -14,6 +14,7 @@ The alphasign package is a Python API for the
   colors
   counters
   date
+  devices
   extchars
   modes
   packet
