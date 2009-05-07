@@ -114,6 +114,9 @@ AUXILIARY_PORT_OFF    = "\x1D60"
 SHADOW_CHARACTERS_ON  = "\x1D71"
 SHADOW_CHARACTERS_OFF = "\x1D70"
 
+FLASH_ON              = "\x071"
+FLASH_OFF             = "\x070"
+
 # Character spacing
 PROPORTIONAL          = "\x1E0"
 FIXED_WIDTH           = "\x1E1"
