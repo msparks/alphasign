@@ -7,6 +7,8 @@ The alphasign package is a Python API for the
 .. automodule:: alphasign
   :members:
 
+The full API is documented with examples in the pages below:
+
 .. toctree::
   :maxdepth: 2
 

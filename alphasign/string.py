@@ -3,7 +3,11 @@ from packet import Packet
 
 
 class String(object):
-  """Class representing a STRING file."""
+  """Class representing a STRING file.
+
+  :ivar data: string contained within object
+  :ivar label: label of string object
+  """
 
   def __init__(self, data=None, label=None, size=None):
     """
