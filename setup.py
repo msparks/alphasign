@@ -1,7 +1,7 @@
 import setuptools
 setuptools.setup(
   name = 'alphasign',
-  version = '0.9',
+  version = '1.0',
   packages = setuptools.find_packages(),
 
   install_requires = ['pyserial>=2.4', 'pyyaml>=3.05'],
