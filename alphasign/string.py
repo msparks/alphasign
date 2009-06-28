@@ -4,6 +4,7 @@ from packet import Packet
 
 class String(object):
   """Class representing a STRING file."""
+
   def __init__(self, data=None, label=None, size=None):
     """
     :param data: initial string to insert into object
@@ -31,8 +32,8 @@ class String(object):
 
     This is for inserting a STRING file into a TEXT file.
 
-    Returns:
-      control code and specified string label
+    :returns: control code and specified string label
+    :rtype: string
     """
     return "\x10%s" % self.label
 
@@ -42,4 +43,3 @@ class String(object):
 
   def __repr__(self):
     return repr(self.__str__())
-

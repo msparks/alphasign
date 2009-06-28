@@ -3,24 +3,25 @@ from packet import Packet
 
 
 class Date(object):
+  """Class for setting and accessing the date."""
+
   def call_date(self, format=0):
     """Call date for insertion into a TEXT file.
 
-    Args:
-      format: integer from 0 to 9
-                0 - MM/DD/YY
-                1 - DD/MM/YY
-                2 - MM-DD-YY
-                3 - DD-MM-YY
-                4 - MM.DD.YY
-                5 - DD.MM.YY
-                6 - MM DD YY
-                7 - DD MM YY
-                8 - MMM.DD, YYYY
-                9 - Day of week
+    :param format: integer from 0 to 9:
+                     0 - MM/DD/YY;
+                     1 - DD/MM/YY;
+                     2 - MM-DD-YY;
+                     3 - DD-MM-YY;
+                     4 - MM.DD.YY;
+                     5 - DD.MM.YY;
+                     6 - MM DD YY;
+                     7 - DD MM YY;
+                     8 - MMM.DD, YYYY;
+                     9 - Day of week
 
-    Returns:
-      formatted string to use in a TEXT
+    :returns: formatted string to use in a TEXT
+    :rtype: string
     """
     if format < 0 or format > 9:
       format = 0
@@ -33,10 +34,11 @@ class Date(object):
 
     If the date is not specified in the arguments, today's date will be used.
 
-    Args:
-      year (optional): two-digit year (98, 99, 00, ...)
-      month (optional): integer month (1, 2, ..., 12)
-      day (optional): integer day (1, ..., 31)
+    :param year: (optional) two-digit year (98, 99, 00, ...)
+    :param month: (optional) integer month (1, 2, ..., 12)
+    :param day: (optional) integer day (1, ..., 31)
+
+    :rtype: :class:`alphasign.packet.Packet` object
     """
     today = datetime.datetime.today()
     if year is None:
@@ -55,8 +57,9 @@ class Date(object):
 
     If the argument is omitted, today's day will be used.
 
-    Args:
-      day (optional): integer between 1 (Sunday) and 7 (Saturday)
+    :param day: (optional) integer between 1 (Sunday) and 7 (Saturday)
+
+    :rtype: :class:`alphasign.packet.Packet` object
     """
     if day is None or day < 1 or day > 7:
       day = datetime.datetime.today().weekday() + 1

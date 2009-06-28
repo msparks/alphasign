@@ -3,25 +3,25 @@ from packet import Packet
 
 
 class Time(object):
+  """Class for setting and accessing the time."""
+
   def call(self):
     """Call time for insertion into a TEXT file.
 
-    Returns:
-      formatted string to use in a TEXT
+    :returns: formatted string to use in a TEXT
+    :rtype: string
     """
     return "\x13"
 
   def set(self, hour=None, minute=None):
-    """Sets ths hour and minute of the internal clock on the sign.
+    """Sets the hour and minute of the internal clock on the sign.
 
     If the time is not specified in the arguments, the time now will be used.
 
-    Args:
-      hour: hour in 24-hour format (18 instead of 6 for 6PM)
-      minute: minute (0 - 59)
+    :param hour: hour in 24-hour format (18 instead of 6 for 6PM)
+    :param minute: minute (0 - 59)
 
-    Returns:
-      Packet object
+    :rtype: :class:`alphasign.packet.Packet` object
     """
     now = datetime.datetime.today()
     if hour is None:
@@ -36,12 +36,10 @@ class Time(object):
   def set_format(self, format=1):
     """Sets the time format on the sign.
 
-    Args:
-      format: 1 - 24-hour (military) time
-              0 - 12-hour (standard am/pm) format
+    :param format: 1 - 24-hour (military) time;
+                   0 - 12-hour (standard AM/PM) format
 
-    Returns:
-      Packet object
+    :rtype: :class:`alphasign.packet.Packet` object
     """
     if format < 0 or format > 1:
       format = 1

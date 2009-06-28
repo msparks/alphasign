@@ -9,6 +9,7 @@ class Text(object):
 
   This class is aliased as :class:`alphasign.Text` in :mod:`alphasign.__init__`.
   """
+
   def __init__(self, data=None, label=None, size=None,
                position=None, mode=None, priority=False):
     """
