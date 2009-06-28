@@ -8,11 +8,18 @@ import alphasign.text
 
 
 class BaseInterface(object):
+  """Base interface from which all other interfaces inherit.
+
+  This class contains utility methods for fundamental sign features.
+  """
+
   def write(self, data):
     return False
 
   def clear_memory(self):
     """Clear the sign's memory.
+
+    :rtype: None
     """
     pkt = packet.Packet("%s%s" % (constants.WRITE_SPECIAL, "$"))
     self.write(pkt)
@@ -21,10 +28,11 @@ class BaseInterface(object):
   def beep(self, frequency=0, duration=0.1, repeat=0):
     """Make the sign beep.
 
-    Args:
-      frequency: frequency integer (not in Hz), 0 - 254
-      duration: beep duration, 0.1 - 1.5
-      repeat: number of times to repeat, 0 - 15
+    :param frequency: frequency integer (not in Hz), 0 - 254
+    :param duration: beep duration, 0.1 - 1.5
+    :param repeat: number of times to repeat, 0 - 15
+
+    :rtype: None
     """
     if frequency < 0:
       frequency = 0
@@ -50,6 +58,8 @@ class BaseInterface(object):
     """Perform a soft reset on the sign.
 
     This is non-destructive and does not clear the sign's memory.
+
+    :rtype: None
     """
     pkt = packet.Packet("%s%s" % (constants.WRITE_SPECIAL, ","))
     self.write(pkt)
@@ -57,8 +67,10 @@ class BaseInterface(object):
   def allocate(self, files):
     """Allocate a set of files on the device.
 
-    Args:
-      files: list of file objects (Text, String, ...)
+    :param files: list of file objects (:class:`alphasign.text.Text`,
+                                        :class:`alphasign.string.String`, ...)
+
+    :rtype: None
     """
     seq = ""
     for obj in files:
@@ -69,16 +81,16 @@ class BaseInterface(object):
         file_type = "B"
         qqqq = "0000"  # unused for strings
         lock = constants.LOCKED
-      else: # if type(obj) == alphasign.text.Text:
+      else:  # if type(obj) == alphasign.text.Text:
         file_type = "A"
         qqqq = "FFFF"  # TODO(ms): start/end times
         lock = constants.UNLOCKED
 
       alloc_str = ("%s%s%s%s%s" %
-                   (obj.label,   # file label to allocate
-                   file_type,    # file type
+                   (obj.label,  # file label to allocate
+                   file_type,   # file type
                    lock,
-                   size_hex,     # size in hex
+                   size_hex,    # size in hex
                    qqqq))
       seq += alloc_str
 
@@ -98,11 +110,14 @@ class BaseInterface(object):
   def set_run_sequence(self, files, locked=False):
     """Set the run sequence on the device.
 
-    This determines the order in which the files are displayed on the device.
+    This determines the order in which the files are displayed on the device, if
+    at all. This is useful when handling multiple TEXT files.
 
-    Args:
-      files: ordered list of file objects (Text, String, ...)
-      locked: allow sequence to be changed with IR keyboard
+    :param files: list of file objects (:class:`alphasign.text.Text`,
+                                        :class:`alphasign.string.String`, ...)
+    :param locked: allow sequence to be changed with IR keyboard
+
+    :rtype: None
     """
     seq_str = ".T"
     seq_str += locked and "L" or "U"
