@@ -1,5 +1,6 @@
 import serial
-import usb
+try: import usb
+except: pass
 
 from alphasign.interfaces import base
 
