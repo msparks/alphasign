@@ -4,7 +4,7 @@ setuptools.setup(
   version = '1.0',
   packages = setuptools.find_packages(),
 
-  install_requires = ['pyserial>=2.4', 'pyusb>=1.0.0', 'pyyaml>=3.05'],
+  install_requires = ['pyserial>=2.4', 'pyusb>=1.0.0a2', 'pyyaml>=3.05'],
 
   author = 'Matt Sparks',
   author_email = 'ms@quadpoint.org',
