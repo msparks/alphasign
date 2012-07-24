@@ -25,7 +25,7 @@ Here is a simple example for controlling a Betabrite Prism via USB::
 
     # write objects
     for obj in (counter_str, counter_txt):
-      self.write(obj)
+      sign.write(obj)
 
     # (strictly) monotonically increasing counter
     counter_value = 0
