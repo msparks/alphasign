@@ -1,36 +1,46 @@
 import serial
-import time
-import usb
+try: import usb
+except: pass
 
 from alphasign.interfaces import base
-
 
 class Serial(base.BaseInterface):
   """Connect to a sign through a local serial device.
 
   This class uses `pySerial <http://pyserial.sourceforge.net/>`_.
   """
-  def __init__(self, device="/dev/ttyS0"):
+  def __init__(self, device="/dev/ttyS0", baudrate=4800, 
+               bytesize=8, parity='E', stopbits=2,
+               xonxoff=False, rtscts=False, timeout=1,
+               debug=True):
     """
     :param device: character device (default: /dev/ttyS0)
     :type device: string
+    :param debug: loudly show bytes going across the wire
+    :type device: boolean
+
+    All other parameters are as per serial.Serial() They are passed
+    through as much as possible while leaving the defaults set as they
+    are to avoid breaking existing code using the library.
+
+    Unfortunately, the defaults as they stand won't work with some
+    devices.
+
+    Changing the hardware flow control isn't a good idea as many 
+    of the alphasign devices don't have pins for it on RS232 port.
     """
-    self.device = device
-    self.debug = True
     self._conn = None
+
+    self.device = device
+    self.debug = debug
+    self.serialargs = dict(port=device, baudrate=baudrate, bytesize=bytesize,
+                           parity=parity, stopbits=stopbits,  xonxoff=xonxoff,
+                           rtscts=rtscts, timeout=timeout)
 
   def connect(self):
     """Establish connection to the device.
     """
-    # TODO(ms): these settings can probably be tweaked and still support most of
-    # the devices.
-    self._conn = serial.Serial(port=self.device,
-                               baudrate=4800,
-                               parity=serial.PARITY_EVEN,
-                               stopbits=serial.STOPBITS_TWO,
-                               timeout=1,
-                               xonxoff=0,
-                               rtscts=0)
+    self._conn = serial.Serial(**self.serialargs)
 
   def disconnect(self):
     """Disconnect from the device.
