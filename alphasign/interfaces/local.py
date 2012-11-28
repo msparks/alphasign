@@ -28,6 +28,7 @@ class Serial(base.BaseInterface):
                                baudrate=4800,
                                parity=serial.PARITY_EVEN,
                                stopbits=serial.STOPBITS_TWO,
+                               bytesize=7,
                                timeout=1,
                                xonxoff=0,
                                rtscts=0)
