@@ -37,13 +37,19 @@ class Dots(object):
     if columns < 1:
       columns = 1
     
+    #extra column for the <CR> bytes
+    columns = columns + 1
+    
     self.columns = columns
     self.rows = rows
-    self.data = [fill for _ in xrange(rows * columns)]
+    self.data = bytearray(fill for _ in xrange(rows * columns))
+    #write the <CR> characters
+    for row in xrange(self.rows):
+      self[(row, columns - 1)] = constants.CR
     self.label = label
     
     #Size is stored such that in can be unpacked as two 2-byte hex numbers
-    self.size = (rows * 256) + columns
+    self.size = (rows * 256) + (columns - 1)
     
   def call(self):
     """Call a SMALL DOTS picture
@@ -57,15 +63,13 @@ class Dots(object):
     return "\x14%s" % self.label
   
   def __str__(self):
-    rows = (''.join(self.data[row:row+self.columns]) for row in xrange(0, self.rows * self.columns, self.columns))
-    data = ''.join(('%s%s' % (row, constants.CR) for row in rows))
     hex_size = "%04x" % self.size
     
     return str(Packet("%s%s%s%s" %
       (constants.WRITE_SMALL_DOTS,
        self.label,
        hex_size,
-       data)))
+       self.data)))
     
   def __repr__(self):
     return repr(self.__str__())
