@@ -5,7 +5,7 @@ from alphasign import packet
 
 import alphasign.string
 import alphasign.text
-
+import alphasign.dots
 
 class BaseInterface(object):
   """Base interface from which all other interfaces inherit.
@@ -81,9 +81,13 @@ class BaseInterface(object):
         file_type = "B"
         qqqq = "0000"  # unused for strings
         lock = constants.LOCKED
-      else:  # if type(obj) == alphasign.text.Text:
+      elif type(obj) == alphasign.text.Text:
         file_type = "A"
         qqqq = "FFFF"  # TODO(ms): start/end times
+        lock = constants.UNLOCKED
+      else: #if type(obj) == dots.Dots
+        file_type = "D"
+        qqqq = "4000" #8 color display
         lock = constants.UNLOCKED
 
       alloc_str = ("%s%s%s%s%s" %
