@@ -52,17 +52,6 @@ RAINBOW_2 = "\x1CA"
 COLOR_MIX = "\x1CB"
 AUTOCOLOR = "\x1CC"
 
-# Colors for SMALL DOTS / LARGE DOTS pictures
-DOTS_BLANK = "\x30"
-DOTS_RED = "\x31"
-DOTS_GREEN = "\x32"
-DOTS_AMBER = "\x33"
-DOTS_DIM_RED = "\x34"
-DOTS_DIM_GREEN = "\x35"
-DOTS_BROWN = "\x36"
-DOTS_ORANGE = "\x37"
-DOTS_YELLOW = "\x38"
-
 def rgb(rgb):
   """
   Create color constant for use in TEXT and STRING files.
