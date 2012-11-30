@@ -57,7 +57,7 @@ class Dots(object):
     return "\x14%s" % self.label
   
   def __str__(self):
-    rows = [''.join(self.data[row:row+self.columns]) for row in xrange(0, self.rows * self.columns)]
+    rows = (''.join(self.data[row:row+self.columns]) for row in xrange(0, self.rows * self.columns))
     data = ''.join(('%s%s' % (row, constants.CR) for row in rows))
     hex_size = "%04x" % self.size
     
@@ -67,38 +67,38 @@ class Dots(object):
        hex_size,
        data)))
     
-    def __repr__(self):
-      return repr(self.__str__())
+  def __repr__(self):
+    return repr(self.__str__())
+  
+  def _getindex(self, row, column):
+    if row < 0 or row >= self.rows:
+      raise IndexError("row must be in the range [0, %s)" % self.rows)
+    if column < 0 or column >= self.columns:
+      raise IndexError("column must be in the range [0, %s)" % self.columns)
+    return (row * self.columns) + column
+  
+  def __setitem__(self, key, value):
+    """Set an individual pixel
     
-    def _getindex(row, column):
-      if row < 0 or row >= self.rows:
-        raise IndexError("row must be in the range [0, %s)" % self.rows)
-      if column < 0 or column >= self.columns:
-        raise IndexError("column must be in the range [0, %s)" % self.columns)
-      return (row * self.columns) + column
+    :param key: a tuple of (row, column)
+    :param value: the value to set the pixel to
+    :raises: IndexError if key outside the row, column range
+    :raises: TypeError if key is not a tuple
+    """
+    if type(key) != tuple:
+      raise TypeError("key must be a tuple")
+    index = self._getindex(*key)
+    self.data[index] = value
     
-    def __setitem__(self, key, value):
-      """Set an individual pixel
-      
-      :param key: a tuple of (row, column)
-      :param value: the value to set the pixel to
-      :raises: IndexError if key outside the row, column range
-      :raises: TypeError if key is not a tuple
-      """
-      if type(key) != tuple:
-        raise TypeError("key must be a tuple")
-      index = self._getindex(*key)
-      self.data[index] = value
-      
-    def __getitem__(self, key):
-      """Get the value of a pixel
-      
-      :param key: a tuple of (row, column)
-      :raises: IndexError if key outside the row, column range
-      :raises: TypeError if key is not a tuple
-      """
-      if type(key) != tuple:
-        raise TypeError("key must be a tuple")
-      index = self._getindex(*key)
-      return self.data[index]
+  def __getitem__(self, key):
+    """Get the value of a pixel
     
+    :param key: a tuple of (row, column)
+    :raises: IndexError if key outside the row, column range
+    :raises: TypeError if key is not a tuple
+    """
+    if type(key) != tuple:
+      raise TypeError("key must be a tuple")
+    index = self._getindex(*key)
+    return self.data[index]
+  
