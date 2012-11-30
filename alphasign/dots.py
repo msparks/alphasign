@@ -104,3 +104,11 @@ class Dots(object):
     if type(key) != tuple:
       raise TypeError("key must be a tuple")
     return self.data[self._getindex(*key)]
+  
+  def debug_print(self):
+    """Prints the currently stored image
+    """
+    for row in xrange(self.rows):
+      begin = self._getindex(row, 0)
+      end = self._getindex(row, self.columns - 1)
+      print self.data[begin:end]
