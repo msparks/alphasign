@@ -5,10 +5,11 @@ import constants
 class Dots(object):
   """Class reperesenting a SMALL DOTS file.
   
-  :ivar data: list containing the pixel data
+  :ivar data: bytearray containing the pixel data
   :ivar rows: the number of rows in the image
   :ivar columns: the number of columns in the image
   :ivar label: the label of the dots object
+  :ivar size: a combined representation of rows and columns, for the interface allocator
   """
   
   def __init__(self, rows=None, columns=None, fill=None, label=None):
@@ -91,8 +92,7 @@ class Dots(object):
     """
     if type(key) != tuple:
       raise TypeError("key must be a tuple")
-    index = self._getindex(*key)
-    self.data[index] = value
+    self.data[self._getindex(*key)] = value
     
   def __getitem__(self, key):
     """Get the value of a pixel
@@ -103,5 +103,4 @@ class Dots(object):
     """
     if type(key) != tuple:
       raise TypeError("key must be a tuple")
-    index = self._getindex(*key)
-    return self.data[index]
+    return self.data[self._getindex(*key)]
