@@ -11,10 +11,11 @@ class Dots(object):
   :ivar label: the label of the dots object
   """
   
-  def __init__(self, rows=None, columns=None, label=None):
+  def __init__(self, rows=None, columns=None, fill=None, label=None):
     """
     :param rows: the number of rows in the image (default: 32)
     :param columns: the number of columns in the image (default: 255)
+    :param fill: the color to fill the sign with (default: DOTS_BLANK)
     """
     #The defaults here are the resolution of the alpha big dot sign. I'm not
     #familiar with other sizes, but I'm open to more common defaults
@@ -22,6 +23,8 @@ class Dots(object):
       rows = 7
     if columns is None:
       columns = 80 
+    if fill is None:
+      fill = colors.DOTS_BLANK
     if label is None:
       label = "1" #TODO: find a reasonable default
     
@@ -36,7 +39,7 @@ class Dots(object):
     
     self.columns = columns
     self.rows = rows
-    self.data = [colors.DOTS_BLANK for _ in xrange(rows * columns)]
+    self.data = [fill for _ in xrange(rows * columns)]
     self.label = label
     
     #Size is stored such that in can be unpacked as two 2-byte hex numbers
