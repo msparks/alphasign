@@ -19,7 +19,7 @@ class Dots(object):
     """
     #The defaults here are the resolution of the alpha big dot sign. I'm not
     #familiar with other sizes, but I'm open to more common defaults
-    if rows in None:
+    if rows is None:
       rows = 7
     if columns is None:
       columns = 80 
