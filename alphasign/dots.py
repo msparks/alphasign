@@ -57,7 +57,7 @@ class Dots(object):
     return "\x14%s" % self.label
   
   def __str__(self):
-    rows = (''.join(self.data[row:row+self.columns]) for row in xrange(0, self.rows * self.columns))
+    rows = (''.join(self.data[row:row+self.columns]) for row in xrange(0, self.rows * self.columns, self.columns))
     data = ''.join(('%s%s' % (row, constants.CR) for row in rows))
     hex_size = "%04x" % self.size
     
@@ -101,4 +101,3 @@ class Dots(object):
       raise TypeError("key must be a tuple")
     index = self._getindex(*key)
     return self.data[index]
-  
