@@ -64,5 +64,6 @@ import extchars
 import modes
 import positions
 import speeds
+import dotcolors
 
 
