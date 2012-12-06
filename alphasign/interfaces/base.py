@@ -30,7 +30,7 @@ class BaseInterface(object):
     :returns: string containing the data. False if there was an error with the read or write.
     """
     
-    if self.write(packet):
+    if self.write(data):
       return self.read()
     return False
 
