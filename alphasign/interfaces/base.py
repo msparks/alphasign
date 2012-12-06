@@ -13,7 +13,24 @@ class BaseInterface(object):
   This class contains utility methods for fundamental sign features.
   """
 
+  #TODO: perhaps raise a NotImplementedError here?
   def write(self, data):
+    return False
+  
+  def read(self):
+    return False
+  
+  def request(self, data):
+    """Writes the packet to the interface, then listens for and returns
+    a response
+    
+    :param data: packet to write
+    :type packet: :class:`alphasign.packet.Packet`
+    :returns: string containing the data. False if there was an error with the read or write.
+    """
+    
+    if self.write(packet):
+      return self.read()
     return False
 
   def clear_memory(self):
