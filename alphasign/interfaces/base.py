@@ -1,4 +1,5 @@
 import time
+import re
 
 from alphasign import constants
 from alphasign import packet
@@ -25,7 +26,7 @@ class BaseInterface(object):
     a response
     
     :param data: packet to write
-    :type packet: :class:`alphasign.packet.Packet`
+    :type data: :class:`alphasign.packet.Packet`
     :returns: string containing the data. False if there was an error with the read or write.
     """
     
@@ -142,3 +143,90 @@ class BaseInterface(object):
       seq_str += obj.label
     pkt = packet.Packet("%s%s" % (constants.WRITE_SPECIAL, seq_str))
     self.write(pkt)
+    
+  @staticmethod
+  def _decorate_table_entry(entry):
+    """Add processed attributes to a table entry retrieved from the read_memory_table function below
+    
+    This function adds some processed attributes to each table entry- it adds
+    a human-readable data type, parses the size into height and width for dots
+    pictures, and converts the size to an int. It returns a new entry, and
+    leaves the old one untouched.
+    
+    :param entry: the table entry to decorate
+    :returns: the decortated table entry
+    """
+    
+    result = dict(entry.iteritems())
+    
+    #convert size from hex string to int
+    result["size"] = int(result["size"] , 16)
+    
+    #add type field. add height and width for dots.
+    if result["type character"] == "A":
+      result["type"] = "TEXT"
+    elif result["type character"] == "B":
+      result["type"] = "STRING"
+    elif result["type character"] == "D":
+      result["type"] = "DOTS"
+      #additionally add height and width
+      result["height"] = int(result["size"] / 256)
+      result["width"] = result["size"] % 256
+      
+    return result
+      
+  def read_raw_memory_table(self):
+    """Reads the current memory configuration as a raw string
+    
+    This function reads the raw memory configuration from the sign, extracts
+    the data table portion, and returns it raw. 
+    
+    :returns: raw memory layout. False if there was an error in the process.
+    """
+    memory = self.request(packet.Packet('F$'))
+    if memory == False or memory == '':
+      return False
+    
+    #TODO: checksum verification
+    
+    #This pattern extract the table and checksumfrom the packet
+    pattern = "\x00+?\x01000\x02E\$(?P<table>(?:[\x20-\x7F][ABD][UL][0-9a-fA-F]{4}[0-9A-Fa-f]{4})*)\x03(?P<checksum>[0-9A-Fa-f]{4})\x04"
+    match = re.match(pattern, memory)
+    if match is not None:
+      return match.group('table')
+    else:
+      return False
+  
+  def read_memory_table(self, table=None):
+    """Read and parse the current memory table
+    
+    This function reads the current memory table and parses it into a list of
+    dicts, where each dict contains the configuration for a single file label.
+    If the table argument is given, it is used instead of reading from the sign.
+    
+    Example: `sign.read_memory_table(sign.read_raw_memory_table())` is the same
+    as `sign.read_memory_table()`
+    
+    :returns: list of dicts, where each dict is the data for a single file in the table
+    """
+    
+    if table is None:
+      table = self.read_raw_memory_table()
+      
+    if table == False:
+      return False
+    
+    #This pattern groups an individual table into its constituent parts
+    pattern = "(?P<label>[\x20-\x7F])(?P<type>[ABD])(?P<locked>[UL])(?P<size>[0-9a-fA-F]{4})(?P<Q>[0-9A-Fa-f]{4})"
+    
+    ##
+    #Note: technically, table is a generator at each of these steps, not a list.
+    #This conserves memory and may allow for some runtime optimization. For
+    #the purpose of reading the code, they may be considered lists.
+    ##
+    table = (table[i:i + 11] for i in xrange(0, len(table), 11)) #table is a list of 11-byte raw string entries
+    table = (re.match(pattern, item) for item in table) #table is a list of re match objects
+    table = (match.groupdict() for match in table) #table is a list of dicts, where each dict is a table entry
+    table = (self._decorate_table_entry(entry) for entry in table) #table is a list of decorated dicts
+    
+    return list(table)
