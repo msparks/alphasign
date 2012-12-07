@@ -161,7 +161,7 @@ class BaseInterface(object):
     result = dict(entry.iteritems())
     
     #convert size from hex string to int
-    result["size"] = int(result["size"] , 16)
+    result["size"] = int(result["size"], 16)
     
     #add type field. add height and width for dots.
     if result["type character"] == "A":
@@ -175,6 +175,13 @@ class BaseInterface(object):
       result["width"] = result["size"] % 256
       
     return result
+  
+  @staticmethod
+  def _chunk_raw_memory_table(table):
+    """Simple generator to split a raw memory table into 11-character entries
+    """
+    for i in xrange(0, len(table), 11):
+      yield table[i:i+11]
       
   def read_raw_memory_table(self):
     """Reads the current memory configuration as a raw string
@@ -190,15 +197,15 @@ class BaseInterface(object):
     
     #TODO: checksum verification
     
-    #This pattern extract the table and checksumfrom the packet
-    pattern = "\x00+?\x01000\x02E\$(?P<table>(?:[\x20-\x7F][ABD][UL][0-9a-fA-F]{4}[0-9A-Fa-f]{4})*)\x03(?P<checksum>[0-9A-Fa-f]{4})\x04"
+    #This pattern extracts the table and checksum from the packet
+    pattern = "\x00+\x01000\x02E\$(?P<table>(?:[\x20-\x7F][ABD][UL][0-9A-Fa-f]{4}[0-9A-Fa-f]{4})*)\x03(?P<checksum>[0-9A-Fa-f]{4})\x04"
     match = re.match(pattern, memory)
     if match is not None:
       return match.group('table')
     else:
       return False
   
-  def read_memory_table(self, raw_table=None):
+  def read_memory_table(self, table=None):
     """Read and parse the current memory table
     
     This function reads the current memory table and parses it into a list of
@@ -208,21 +215,22 @@ class BaseInterface(object):
     Example: `sign.read_memory_table(sign.read_raw_memory_table())` is the same
     as `sign.read_memory_table()`
     
+    :param table: an optional string containing a raw memory layout, such as
+      is outputted by read_raw_memory_table()
     :returns: list of dicts, where each dict is the data for a single file in the table
     """
     
-    if raw_table is None:
-      raw_table = self.read_raw_memory_table()
+    if table is None:
+      table = self.read_raw_memory_table()
       
-    if raw_table == False:
+    if table == False:
       return False
     
-    #This pattern groups an individual table into its constituent parts
-    pattern = "(?P<label>[\x20-\x7F])(?P<type>[ABD])(?P<locked>[UL])(?P<size>[0-9a-fA-F]{4})(?P<Q>[0-9A-Fa-f]{4})"
+    pattern = re.compile("(?P<label>[\x20-\x7F])(?P<type>[ABD])(?P<locked>[UL])(?P<size>[0-9a-fA-F]{4})(?P<Q>[0-9A-Fa-f]{4})")
     
-    table = (raw_table[i:i + 11] for i in xrange(0, len(raw_table), 11))
-    table = imap(lambda entry: re.match(pattern, entry), table)
-    table = imap(lambda match: match.groupdict(), table)
-    table = imap(self._decorate_table_entry, table)
+    table = self._chunk_raw_memory_table(table) #table is split into 11 character entries
+    table = imap(pattern.match, table) #each entry is matched to the memory-table-entry regex
+    table = imap(lambda match: match.groupdict(), table) #the groups and their values are extracted from the match
+    table = imap(self._decorate_table_entry, table) #the group dicts are decorated, to make them more human readable
     
     return list(table)
