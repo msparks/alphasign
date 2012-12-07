@@ -65,11 +65,12 @@ class Serial(base.BaseInterface):
     if not self._conn or not self._conn.isOpen():
       self.connect()
     if self.debug:
-      print "Reading packet from interface"
+      print "Reading packet: ",
     try:
       result = self._conn.readall()
     except OSError:
       return False
+    print result
     return result
   
   
