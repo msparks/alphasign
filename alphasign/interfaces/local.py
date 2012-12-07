@@ -64,13 +64,12 @@ class Serial(base.BaseInterface):
     
     if not self._conn or not self._conn.isOpen():
       self.connect()
-    if self.debug:
-      print "Reading packet: ",
     try:
       result = self._conn.readall()
     except OSError:
       return False
-    print result
+    if self.debug:
+      print "Read packet: %s" % repr(result)
     return result
   
   
@@ -163,5 +162,5 @@ class DebugInterface(base.BaseInterface):
   
   def read(self):
     if self.debug:
-      print "Reading packet"
+      print "Reading packet: "
     return ''
