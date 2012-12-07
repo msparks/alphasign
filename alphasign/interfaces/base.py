@@ -226,11 +226,12 @@ class BaseInterface(object):
     if table == False:
       return False
     
-    pattern = re.compile("(?P<label>[\x20-\x7F])(?P<type>[ABD])(?P<locked>[UL])(?P<size>[0-9a-fA-F]{4})(?P<Q>[0-9A-Fa-f]{4})")
+    pattern = re.compile("(?P<label>[\x20-\x7F])(?P<type character>[ABD])(?P<locked>[UL])(?P<size>[0-9a-fA-F]{4})(?P<Q>[0-9A-Fa-f]{4})")
     
     table = self._chunk_raw_memory_table(table) #table is split into 11 character entries
     table = imap(pattern.match, table) #each entry is matched to the memory-table-entry regex
     table = imap(lambda match: match.groupdict(), table) #the groups and their values are extracted from the match
+    print table[0].grou
     table = imap(self._decorate_table_entry, table) #the group dicts are decorated, to make them more human readable
     
     return list(table)
