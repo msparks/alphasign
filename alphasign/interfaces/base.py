@@ -1,5 +1,6 @@
 import time
 import re
+from itertools import imap
 
 from alphasign import constants
 from alphasign import packet
@@ -197,7 +198,7 @@ class BaseInterface(object):
     else:
       return False
   
-  def read_memory_table(self, table=None):
+  def read_memory_table(self, raw_table=None):
     """Read and parse the current memory table
     
     This function reads the current memory table and parses it into a list of
@@ -210,23 +211,18 @@ class BaseInterface(object):
     :returns: list of dicts, where each dict is the data for a single file in the table
     """
     
-    if table is None:
-      table = self.read_raw_memory_table()
+    if raw_table is None:
+      raw_table = self.read_raw_memory_table()
       
-    if table == False:
+    if raw_table == False:
       return False
     
     #This pattern groups an individual table into its constituent parts
     pattern = "(?P<label>[\x20-\x7F])(?P<type>[ABD])(?P<locked>[UL])(?P<size>[0-9a-fA-F]{4})(?P<Q>[0-9A-Fa-f]{4})"
     
-    ##
-    #Note: technically, table is a generator at each of these steps, not a list.
-    #This conserves memory and may allow for some runtime optimization. For
-    #the purpose of reading the code, they may be considered lists.
-    ##
-    table = (table[i:i + 11] for i in xrange(0, len(table), 11)) #table is a list of 11-byte raw string entries
-    table = (re.match(pattern, item) for item in table) #table is a list of re match objects
-    table = (match.groupdict() for match in table) #table is a list of dicts, where each dict is a table entry
-    table = (self._decorate_table_entry(entry) for entry in table) #table is a list of decorated dicts
+    table = (raw_table[i:i + 11] for i in xrange(0, len(raw_table), 11))
+    table = imap(lambda entry: re.match(pattern, entry), table)
+    table = imap(lambda match: match.groupdict(), table)
+    table = imap(self._decorate_table_entry, table)
     
     return list(table)
