@@ -1,5 +1,3 @@
-import string
-
 from packet import Packet
 import dotcolors
 import constants
@@ -130,7 +128,7 @@ class Dots(object):
     real_columns = self.columns-1
     
     if len(row) < real_columns:
-      row = string.ljust(row, real_columns, fillchar=fill)
+      row = row.ljust(real_columns, fillchar=fill)
     elif len(row) > real_columns:
       row = row[:real_columns]
     row = row + constants.CR
