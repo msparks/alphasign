@@ -1,5 +1,5 @@
 from packet import Packet
-import colors
+import dotcolors
 import constants
 
 class Dots(object):
@@ -14,9 +14,9 @@ class Dots(object):
   
   def __init__(self, rows=None, columns=None, fill=None, label=None):
     """
-    :param rows: the number of rows in the image (default: 32)
-    :param columns: the number of columns in the image (default: 255)
-    :param fill: the color to fill the sign with (default: DOTS_BLANK)
+    :param rows: the number of rows in the image (default: 7)
+    :param columns: the number of columns in the image (default: 80)
+    :param fill: the color to fill the sign with (default: BLANK)
     """
     #The defaults here are the resolution of the alpha big dot sign. I'm not
     #familiar with other sizes, but I'm open to more common defaults
@@ -25,7 +25,7 @@ class Dots(object):
     if columns is None:
       columns = 80 
     if fill is None:
-      fill = colors.DOTS_BLANK
+      fill = dotcolors.BLANK
     if label is None:
       label = "1" #TODO: find a reasonable default
     
@@ -49,7 +49,7 @@ class Dots(object):
       self[(row, columns - 1)] = constants.CR
     self.label = label
     
-    #Size is stored such that in can be unpacked as two 2-byte hex numbers
+    #Size is stored such that in can be unpacked as two 2-byte hex numbers by allocate
     self.size = (rows * 256) + (columns - 1)
     
   def call(self):

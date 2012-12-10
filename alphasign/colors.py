@@ -52,6 +52,7 @@ RAINBOW_2 = "\x1CA"
 COLOR_MIX = "\x1CB"
 AUTOCOLOR = "\x1CC"
 
+
 def rgb(rgb):
   """
   Create color constant for use in TEXT and STRING files.
