@@ -206,18 +206,22 @@ class BaseInterface(object):
     else:
       return False
   
-  def read_memory_table(self, table=None):
+  def read_memory_table(self, table=None, label=None):
     """Read and parse the current memory table
     
     This function reads the current memory table and parses it into a list of
     dicts, where each dict contains the configuration for a single file label.
     If the table argument is given, it is used instead of reading from the sign.
+    If the label argument is given, that label's individual entry (or None) are
+    returned.
     
     Example: `sign.read_memory_table(sign.read_raw_memory_table())` is the same
     as `sign.read_memory_table()`
     
     :param table: an optional string containing a raw memory layout, such as
       is outputted by read_raw_memory_table()
+    :param table: an optional string with a label to search for. The function
+      will only return the entry for that label.
     :returns: list of dicts, where each dict is the data for a single file in the table
     """
     
@@ -233,5 +237,13 @@ class BaseInterface(object):
     table = imap(pattern.match, table) #each entry is matched to the memory-table-entry regex
     table = imap(lambda match: match.groupdict(), table) #the groups and their values are extracted from the match
     table = imap(self._decorate_table_entry, table) #the group dicts are decorated, to make them more human readable
+    
+    #TODO: search the raw character string for the label directly, to avoid having to regex and decorate every entry
+    if label is not None:
+      #Find label in table. There's not yet a python find-in-iterable builtin
+      for entry in table:
+        if entry['label'] == label:
+          return [entry]
+      return []
     
     return list(table)
