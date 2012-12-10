@@ -13,13 +13,12 @@ The following constants are defined to change DOT PICTURE
 * :const:`YELLOW` 
 """
 
-
-BLANK = "\x30"
-RED = "\x31"
-GREEN = "\x32"
-AMBER = "\x33"
-DIM_RED = "\x34"
+BLANK     = "\x30"
+RED       = "\x31"
+GREEN     = "\x32"
+AMBER     = "\x33"
+DIM_RED   = "\x34"
 DIM_GREEN = "\x35"
-BROWN = "\x36"
-ORANGE = "\x37"
-YELLOW = "\x38"
+BROWN     = "\x36"
+ORANGE    = "\x37"
+YELLOW    = "\x38"
