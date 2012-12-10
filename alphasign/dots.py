@@ -1,3 +1,5 @@
+import string
+
 from packet import Packet
 import dotcolors
 import constants
@@ -112,3 +114,25 @@ class Dots(object):
       begin = self._getindex(row, 0)
       end = self._getindex(row, self.columns - 1)
       print self.data[begin:end]
+      
+  def set_row(self, row_index, row, fill=dotcolors.BLANK):
+    """Sets the row at row_index to the string specified by row
+    
+    This functions sets a row. If row is shorter than the width, it is padded
+    on the right the fill parameter. If it is longer, it is truncated on the
+    right.
+    
+    :param row_index: the index of the row to set
+    :param row: a string with the row fill data
+    :param fill: optional parameter specifying the fill parameter
+    """
+    
+    real_columns = self.columns-1
+    
+    if len(row) < real_columns:
+      row = string.ljust(row, real_columns, fillchar=fill)
+    elif len(row) > real_columns:
+      row = row[:real_columns]
+    row = row + constants.CR
+    
+    self.data[self.columns * row_index:self.columns * (row_index + 1)] = row
