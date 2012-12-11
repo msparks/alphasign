@@ -243,7 +243,7 @@ class BaseInterface(object):
       #Find label in table. There's not yet a python find-in-iterable builtin
       for entry in table:
         if entry['label'] == label:
-          return [entry]
-      return []
+          return entry
+      return None
     
     return list(table)
