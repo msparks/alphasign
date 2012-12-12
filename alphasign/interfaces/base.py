@@ -74,7 +74,7 @@ class BaseInterface(object):
     """
     seq = ""
     for obj in files:
-      size_hex = "%04x" % obj.size
+      size_hex = "%04X" % obj.size
       # format: FTPSIZEQQQQ
 
       if type(obj) == alphasign.string.String:
@@ -100,7 +100,7 @@ class BaseInterface(object):
                    ("%d" % (i + 1),
                    "A",    # file type
                    constants.UNLOCKED,
-                   "%04x" % 100,
+                   "%04X" % 100,
                    "FEFE"))
       seq += alloc_str
 
