@@ -64,7 +64,7 @@ class Dots(object):
     return "\x14%s" % self.label
   
   def __str__(self):
-    hex_size = "%04x" % self.size
+    hex_size = "%04X" % self.size
     
     return str(Packet("%s%s%s%s" %
       (constants.WRITE_SMALL_DOTS,
