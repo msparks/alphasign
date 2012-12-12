@@ -7,6 +7,7 @@ import alphasign.string
 import alphasign.text
 import alphasign.dots
 
+
 class BaseInterface(object):
   """Base interface from which all other interfaces inherit.
 
@@ -85,10 +86,12 @@ class BaseInterface(object):
         file_type = "A"
         qqqq = "FFFF"  # TODO(ms): start/end times
         lock = constants.UNLOCKED
-      else: #if type(obj) == dots.Dots
+      elif type(obj) == alphasign.dots.Dots:
         file_type = "D"
         qqqq = "4000" #8 color display
         lock = constants.UNLOCKED
+      else:
+        return False #TODO: raise exception
 
       alloc_str = ("%s%s%s%s%s" %
                    (obj.label,  # file label to allocate
