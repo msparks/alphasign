@@ -1,4 +1,5 @@
 import constants
+import datetime
 from packet import Packet
 
 
@@ -48,8 +49,8 @@ class Date(object):
     if day is None:
       day = today.day
 
-    packet = self._packet("%s%s%02d%02d%02d" % (constants.WRITE_SPECIAL, ";",
-                                                year, month, day))
+    packet = Packet("%s%s%02d%02d%02d" % (constants.WRITE_SPECIAL, ";",
+                                          month, day, int(year)))
     return packet
 
   def set_day(self, day=None):
@@ -63,5 +64,5 @@ class Date(object):
     """
     if day is None or day < 1 or day > 7:
       day = datetime.datetime.today().weekday() + 1
-    packet = self._packet("%s%s%s" % (constants.WRITE_SPECIAL, "&", day))
+    packet = Packet("%s%s%s" % (constants.WRITE_SPECIAL, "&", day))
     return packet
