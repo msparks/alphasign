@@ -54,6 +54,7 @@ from date import Date
 from string import String
 from packet import Packet
 from text import Text
+from dots import Dots
 
 import charsets
 import colors
@@ -63,5 +64,6 @@ import extchars
 import modes
 import positions
 import speeds
+import dotcolors
 
 
