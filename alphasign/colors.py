@@ -52,6 +52,19 @@ RAINBOW_2 = "\x1CA"
 COLOR_MIX = "\x1CB"
 AUTOCOLOR = "\x1CC"
 
+colors = {"RED": RED,
+          "GREEN": GREEN,
+          "AMBER": AMBER,
+          "DIM_RED": DIM_RED,
+          "DIM_GREEN": DIM_GREEN,
+          "BROWN": BROWN,
+          "ORANGE": ORANGE,
+          "YELLOW": YELLOW,
+          "RAINBOW_1": RAINBOW_1,
+          "RAINBOW_2": RAINBOW_2,
+          "COLOR_MIX": COLOR_MIX,
+          "AUTOCOLOR": AUTOCOLOR}
+
 
 def rgb(rgb):
   """
