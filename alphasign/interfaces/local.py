@@ -55,6 +55,24 @@ class Serial(base.BaseInterface):
       return False
     else:
       return True
+    
+  def read(self):
+    """Read a response from the serial interface.
+    
+    :returns: string containing the data. False if there was an error.
+    """
+    
+    if not self._conn or not self._conn.isOpen():
+      self.connect()
+    try:
+      result = self._conn.readall()
+    except OSError:
+      return False
+    if self.debug:
+      print "Read packet: %s" % repr(result)
+    return result
+  
+  
 
 
 class USB(base.BaseInterface):
@@ -115,6 +133,9 @@ class USB(base.BaseInterface):
     if self.debug:
       print "%d bytes written" % written
     self._conn.bulkWrite(self._write_endpoint.address, '')
+    
+  def read(self):
+    raise NotImplementedError("USB interface does not yet support reads")
 
 
 class DebugInterface(base.BaseInterface):
@@ -138,3 +159,8 @@ class DebugInterface(base.BaseInterface):
     if self.debug:
       print "Writing packet: %s" % repr(packet)
     return True
+  
+  def read(self):
+    if self.debug:
+      print "Reading packet: "
+    return ''

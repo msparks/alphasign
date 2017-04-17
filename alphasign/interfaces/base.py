@@ -1,4 +1,6 @@
 import time
+import re
+from itertools import imap
 
 from alphasign import constants
 from alphasign import packet
@@ -13,7 +15,24 @@ class BaseInterface(object):
   This class contains utility methods for fundamental sign features.
   """
 
+  #TODO: perhaps raise a NotImplementedError here?
   def write(self, data):
+    return False
+  
+  def read(self):
+    return False
+  
+  def request(self, data):
+    """Writes the packet to the interface, then listens for and returns
+    a response
+    
+    :param data: packet to write
+    :type data: :class:`alphasign.packet.Packet`
+    :returns: string containing the data. False if there was an error with the read or write.
+    """
+    
+    if self.write(data):
+      return self.read()
     return False
 
   def clear_memory(self):
@@ -125,3 +144,106 @@ class BaseInterface(object):
       seq_str += obj.label
     pkt = packet.Packet("%s%s" % (constants.WRITE_SPECIAL, seq_str))
     self.write(pkt)
+    
+  @staticmethod
+  def _decorate_table_entry(entry):
+    """Add processed attributes to a table entry retrieved from the read_memory_table function below
+    
+    This function adds some processed attributes to each table entry- it adds
+    a human-readable data type, parses the size into height and width for dots
+    pictures, and converts the size to an int. It returns a new entry, and
+    leaves the old one untouched.
+    
+    :param entry: the table entry to decorate
+    :returns: the decortated table entry
+    """
+    
+    result = dict(entry.iteritems())
+    
+    #convert size from hex string to int
+    result["size"] = int(result["size"], 16)
+    
+    #add type field. add height and width for dots.
+    type_char = result["type_char"]
+    if type_char == "A":
+      result["type"] = "TEXT"
+    elif type_char == "B":
+      result["type"] = "STRING"
+    elif type_char == "D":
+      result["type"] = "DOTS"
+      #additionally add height and width
+      result["height"] = int(result["size"] / 256)
+      result["width"] = result["size"] % 256
+      
+    return result
+  
+  @staticmethod
+  def _chunk_raw_memory_table(table):
+    """Simple generator to split a raw memory table into 11-character entries
+    """
+    for i in xrange(0, len(table), 11):
+      yield table[i:i+11]
+      
+  def read_raw_memory_table(self):
+    """Reads the current memory configuration as a raw string
+    
+    This function reads the raw memory configuration from the sign, extracts
+    the data table portion, and returns it raw. 
+    
+    :returns: raw memory layout. False if there was an error in the process.
+    """
+    memory = self.request(packet.Packet('F$'))
+    if memory == False or memory == '':
+      return False
+    
+    #TODO: checksum verification
+    
+    #This pattern extracts the table and checksum from the packet
+    pattern = "\x00+\x01000\x02E\$(?P<table>(?:[\x20-\x7F][ABD][UL][0-9A-Fa-f]{4}[0-9A-Fa-f]{4})*)\x03(?P<checksum>[0-9A-Fa-f]{4})\x04"
+    match = re.match(pattern, memory)
+    if match is not None:
+      return match.group('table')
+    else:
+      return False
+  
+  def read_memory_table(self, table=None, label=None):
+    """Read and parse the current memory table
+    
+    This function reads the current memory table and parses it into a list of
+    dicts, where each dict contains the configuration for a single file label.
+    If the table argument is given, it is used instead of reading from the sign.
+    If the label argument is given, that label's individual entry (or None) are
+    returned.
+    
+    Example: `sign.read_memory_table(sign.read_raw_memory_table())` is the same
+    as `sign.read_memory_table()`
+    
+    :param table: an optional string containing a raw memory layout, such as
+      is outputted by read_raw_memory_table()
+    :param table: an optional string with a label to search for. The function
+      will only return the entry for that label.
+    :returns: list of dicts, where each dict is the data for a single file in the table
+    """
+    
+    if table is None:
+      table = self.read_raw_memory_table()
+      
+    if table == False:
+      return False
+    
+    pattern = re.compile("(?P<label>[\x20-\x7F])(?P<type_char>[ABD])(?P<locked>[UL])(?P<size>[0-9a-fA-F]{4})(?P<Q>[0-9A-Fa-f]{4})")
+    
+    table = self._chunk_raw_memory_table(table) #table is split into 11 character entries
+    table = imap(pattern.match, table) #each entry is matched to the memory-table-entry regex
+    table = imap(lambda match: match.groupdict(), table) #the groups and their values are extracted from the match
+    table = imap(self._decorate_table_entry, table) #the group dicts are decorated, to make them more human readable
+    
+    #TODO: search the raw character string for the label directly, to avoid having to regex and decorate every entry
+    if label is not None:
+      #Find label in table. There's not yet a python find-in-iterable builtin
+      for entry in table:
+        if entry['label'] == label:
+          return entry
+      return None
+    
+    return list(table)
