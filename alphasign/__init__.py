@@ -7,6 +7,7 @@ Here is a simple example for controlling a Betabrite Prism via USB::
 
   def main():
     sign = alphasign.USB(alphasign.devices.USB_BETABRITE_PRISM)
+    # sign = alphasign.interfaces.local.Serial(device='/dev/ttyUSB0', baudrate=38400) # serial version
     sign.connect()
     sign.clear_memory()
 

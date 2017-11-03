@@ -10,12 +10,15 @@ class Serial(base.BaseInterface):
 
   This class uses `pySerial <http://pyserial.sourceforge.net/>`_.
   """
-  def __init__(self, device="/dev/ttyS0"):
+  def __init__(self, device="/dev/ttyS0", baudrate=4800):
     """
     :param device: character device (default: /dev/ttyS0)
     :type device: string
+    :param baudrate: baudrate (default: 4800) 
+    :type baudrate: integer
     """
     self.device = device
+    self.baudrate = baudrate
     self.debug = True
     self._conn = None
 
@@ -25,7 +28,7 @@ class Serial(base.BaseInterface):
     # TODO(ms): these settings can probably be tweaked and still support most of
     # the devices.
     self._conn = serial.Serial(port=self.device,
-                               baudrate=4800,
+                               baudrate=self.baudrate,
                                parity=serial.PARITY_EVEN,
                                stopbits=serial.STOPBITS_TWO,
                                bytesize=serial.SEVENBITS,
